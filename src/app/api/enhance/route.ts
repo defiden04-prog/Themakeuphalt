@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 
 export async function POST(request: Request) {
   try {
-    const { image } = await request.json();
+    const { image, requestedMakeupType } = await request.json();
 
     if (!image) {
       return NextResponse.json({ error: "No image provided" }, { status: 400 });
@@ -12,29 +12,29 @@ export async function POST(request: Request) {
     // we use a deterministic data analysis for the 'scan' and Pollinations.ai for the Generative 'avatar'.
     
     // Create a deterministic hash from the uploaded image base64 data to assign traits
-    const sampleStr = image.length > 100 ? image.substring(100, 200) : image;
-    const stringSum = sampleStr.split('').reduce((acc: number, char: string) => acc + char.charCodeAt(0), 0);
-    
     const makeupStyles = [
-      "Dewy Bridal Glow",
-      "Soft Glamour",
-      "Matte Elegance",
-      "Everyday Natural",
-      "Editorial Bold"
+      "Bridal HD",
+      "Soft Glam",
+      "Party Glam",
+      "Natural Look",
+      "Editorial"
     ];
     
-    const makeupType = makeupStyles[stringSum % makeupStyles.length];
+    const skinTones = ["Fair (Cool Undertone)", "Medium (Warm Undertone)", "Olive (Neutral Tone)", "Deep (Warm Tone)", "Tan (Golden Tone)"];
+    const skinTextures = ["Combination / Normal", "Dry / Needs Matte Prep", "Oily / Needs Fixer", "Normal / Balanced", "Sensitive / Hydrate"];
     
-    // Calculate a dynamic score between ~85.0 and 99.9
-    const beautyScore = 85 + (stringSum % 149) / 10;
+    const randomIndex = Math.floor(Math.random() * makeupStyles.length);
+    const makeupType = requestedMakeupType || makeupStyles[randomIndex];
     
-    // Generate a beautiful, unique portrait using Pollinations.ai (Free, Keyless Global API)
-    // We add a random seed so it generates a fresh image each time!
+    const skinTone = skinTones[Math.floor(Math.random() * skinTones.length)];
+    const skinTexture = skinTextures[Math.floor(Math.random() * skinTextures.length)];
+    
+    const beautyScore = 85 + (Math.random() * 14.9);
+    
     const seed = Math.floor(Math.random() * 999999);
-    const prompt = encodeURIComponent(`Beautiful highly detailed realistic photograph of woman wearing ${makeupType} makeup look, looking at camera, close up portrait, professional studio lighting, 8k resolution`);
+    const prompt = encodeURIComponent(`Beautiful highly detailed realistic photograph of woman wearing ${makeupType} makeup look, perfect makeup, professional studio lighting, 8k resolution`);
     const imageUrl = `https://image.pollinations.ai/prompt/${prompt}?width=500&height=600&nologo=true&seed=${seed}`;
 
-    // Add a natural slight delay to simulate the "Scanning" feeling
     await new Promise(resolve => setTimeout(resolve, 800));
 
     return NextResponse.json({
@@ -42,7 +42,9 @@ export async function POST(request: Request) {
       data: {
         makeupType,
         imageUrl,
-        beautyScore: Number(beautyScore.toFixed(1))
+        beautyScore: Number(beautyScore.toFixed(1)),
+        skinTone,
+        skinTexture
       }
     });
 

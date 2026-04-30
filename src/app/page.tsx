@@ -486,22 +486,13 @@ export default function Home() {
         }>
 
         <div className="max-w-[1400px] mx-auto px-6 md:px-12 flex items-center justify-between">
-          <Link href="/" className="relative group overflow-hidden">
-            <motion.span
-              className="text-2xl md:text-3xl font-light tracking-[0.2em] text-white block"
-              whileHover={{ y: -30 }}
-              transition={{ duration: 0.3 }}>
-
+          <Link href="/" className="flex items-center gap-3 relative group">
+            <div className="relative w-12 h-12 md:w-16 md:h-16 rounded-full overflow-hidden border-2 border-amber-500/30 transition-transform duration-500 group-hover:scale-110">
+              <Image src="/logo.png" alt="The Makeup Halt" fill className="object-cover" />
+            </div>
+            <span className="text-xl md:text-2xl font-light tracking-[0.15em] text-white hidden sm:block group-hover:text-amber-400 transition-colors duration-500">
               THE MAKEUP HALT
-            </motion.span>
-            <motion.span
-              className="text-2xl md:text-3xl font-light tracking-[0.2em] text-amber-400 absolute top-0 left-0"
-              initial={{ y: 30 }}
-              whileHover={{ y: 0 }}
-              transition={{ duration: 0.3 }}>
-
-              THE MAKEUP HALT
-            </motion.span>
+            </span>
           </Link>
 
           <div className="hidden lg:flex items-center gap-12">
@@ -542,7 +533,7 @@ export default function Home() {
                   className="bg-amber-500 hover:bg-amber-400 text-black rounded-full px-8 py-5 h-auto text-[11px] tracking-[0.2em] font-semibold transition-all duration-300">
 
                   <a
-                    href="https://razorpay.com/payment-link/plink_S0whHB6te9yGl1"
+                    href="https://form.typeform.com/to/HrxfV7DA"
                     target="_blank"
                     rel="noopener noreferrer">
 
@@ -606,7 +597,7 @@ export default function Home() {
                   className="bg-amber-500 hover:bg-amber-400 text-black rounded-full w-full py-6 text-sm font-semibold tracking-[0.15em] mt-4">
 
                     <a
-                    href="https://razorpay.com/payment-link/plink_S0whHB6te9yGl1"
+                    href="https://form.typeform.com/to/HrxfV7DA"
                     target="_blank"
                     rel="noopener noreferrer">
 
@@ -749,7 +740,7 @@ export default function Home() {
                     className="border-white/20 text-white hover:bg-white/10 rounded-full px-10 py-7 h-auto text-[11px] tracking-[0.2em] font-semibold transition-all duration-500 bg-transparent">
 
                     <a
-                      href="https://razorpay.com/payment-link/plink_S0whHB6te9yGl1"
+                      href="https://form.typeform.com/to/HrxfV7DA"
                       target="_blank"
                       rel="noopener noreferrer">
 
@@ -1057,7 +1048,7 @@ export default function Home() {
                   className="w-full border-white/10 text-white hover:bg-amber-500 hover:border-amber-500 hover:text-black rounded-full py-5 h-auto text-[10px] tracking-[0.15em] font-semibold transition-all duration-500 bg-transparent">
 
                     <a
-                    href="https://razorpay.com/payment-link/plink_S0whHB6te9yGl1"
+                    href="https://form.typeform.com/to/HrxfV7DA"
                     target="_blank"
                     rel="noopener noreferrer">
 

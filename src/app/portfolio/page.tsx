@@ -158,7 +158,7 @@ export default function PortfolioPage() {
               className="bg-amber-500 hover:bg-amber-400 text-black rounded-full px-8 py-5 h-auto text-[11px] tracking-[0.2em] font-semibold transition-all duration-300 hover:scale-105"
             >
               <a
-                href="https://razorpay.com/payment-link/plink_RtTTpygPsuuaXB"
+                href="https://form.typeform.com/to/HrxfV7DA"
                 target="_blank"
                 rel="noopener noreferrer"
               >
@@ -196,7 +196,7 @@ export default function PortfolioPage() {
                   className="bg-amber-500 hover:bg-amber-400 text-black rounded-full w-full py-6 text-sm font-semibold tracking-[0.15em] mt-4"
                 >
                   <a
-                    href="https://razorpay.com/payment-link/plink_RtTTpygPsuuaXB"
+                    href="https://form.typeform.com/to/HrxfV7DA"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
@@ -305,7 +305,7 @@ export default function PortfolioPage() {
               className="bg-amber-500 hover:bg-amber-400 text-black rounded-full px-12 py-7 h-auto text-[11px] tracking-[0.2em] font-semibold transition-all duration-300 group"
             >
               <a
-                href="https://razorpay.com/payment-link/plink_RtTTpygPsuuaXB"
+                href="https://form.typeform.com/to/HrxfV7DA"
                 target="_blank"
                 rel="noopener noreferrer"
               >

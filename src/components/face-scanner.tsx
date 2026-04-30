@@ -8,6 +8,8 @@ export interface AvatarResult {
   makeupType: string;
   imageUrl: string;
   beautyScore: number;
+  skinTone?: string;
+  skinTexture?: string;
 }
 
 export interface ScanResult {

@@ -12,11 +12,11 @@ interface RecommendationResultProps {
 }
 
 const PREVIEW_STYLES = [
-  { name: "Dewy Bridal Glow", imageUrl: "https://images.unsplash.com/photo-1487627448834-8b6ee3c2f0f8?auto=format&fit=crop&w=800&q=80" },
-  { name: "Soft Glamour", imageUrl: "https://images.unsplash.com/photo-1512413914488-66236b2803b8?auto=format&fit=crop&w=800&q=80" },
-  { name: "Matte Elegance", imageUrl: "https://images.unsplash.com/photo-1515377905703-c4788e51af15?auto=format&fit=crop&w=800&q=80" },
-  { name: "Everyday Natural", imageUrl: "https://images.unsplash.com/photo-1558507652-2d9626c4e67a?auto=format&fit=crop&w=800&q=80" },
-  { name: "Editorial Bold", imageUrl: "https://images.unsplash.com/photo-1522337660859-02fbefca4702?auto=format&fit=crop&w=800&q=80" }
+  { name: "Bridal HD", imageUrl: "https://images.unsplash.com/photo-1487627448834-8b6ee3c2f0f8?auto=format&fit=crop&w=800&q=80" },
+  { name: "Soft Glam", imageUrl: "https://images.unsplash.com/photo-1512413914488-66236b2803b8?auto=format&fit=crop&w=800&q=80" },
+  { name: "Party Glam", imageUrl: "https://images.unsplash.com/photo-1515377905703-c4788e51af15?auto=format&fit=crop&w=800&q=80" },
+  { name: "Natural Look", imageUrl: "https://images.unsplash.com/photo-1558507652-2d9626c4e67a?auto=format&fit=crop&w=800&q=80" },
+  { name: "Editorial", imageUrl: "https://images.unsplash.com/photo-1522337660859-02fbefca4702?auto=format&fit=crop&w=800&q=80" }
 ];
 
 export function RecommendationResult({ result, onRetake }: RecommendationResultProps) {
@@ -27,7 +27,7 @@ export function RecommendationResult({ result, onRetake }: RecommendationResultP
   
   // Interactive style toggling
   const [activeStyle, setActiveStyle] = useState({
-    name: avatarResult.makeupType || "Dewy Bridal Glow",
+    name: avatarResult.makeupType || "Bridal HD",
     imageUrl: avatarResult.imageUrl || PREVIEW_STYLES[0].imageUrl
   });
   
@@ -119,16 +119,31 @@ export function RecommendationResult({ result, onRetake }: RecommendationResultP
           })}
         </div>
 
-        {/* AI Score Badge */}
-        <motion.div 
-          animate={{ boxShadow: ["0 0 0px rgba(245,158,11,0)", "0 0 20px rgba(245,158,11,0.3)", "0 0 0px rgba(245,158,11,0)"] }}
-          transition={{ duration: 3, repeat: Infinity }}
-          className="inline-flex items-center gap-3 bg-black border border-amber-500/30 px-6 py-3 rounded-full mb-8 backdrop-blur-md self-center"
-        >
-          <Sparkles className="w-4 h-4 text-amber-500" />
-          <span className="text-xs uppercase tracking-[0.2em] text-white/70">AI Symmetry Score:</span>
-          <span className="font-mono text-amber-400 font-bold text-lg">{avatarResult.beautyScore}/100</span>
-        </motion.div>
+        {/* AI Scan Metrics */}
+        <div className="flex flex-wrap justify-center gap-4 mb-8">
+          <motion.div 
+            animate={{ boxShadow: ["0 0 0px rgba(245,158,11,0)", "0 0 20px rgba(245,158,11,0.3)", "0 0 0px rgba(245,158,11,0)"] }}
+            transition={{ duration: 3, repeat: Infinity }}
+            className="inline-flex flex-col items-center gap-1 bg-black/80 border border-amber-500/30 px-6 py-3 rounded-2xl backdrop-blur-md"
+          >
+            <span className="text-[10px] uppercase tracking-[0.2em] text-white/50 flex items-center gap-1"><Sparkles className="w-3 h-3 text-amber-500" /> AI Symmetry</span>
+            <span className="font-mono text-amber-400 font-semibold">{avatarResult.beautyScore}/100</span>
+          </motion.div>
+          
+          {avatarResult.skinTone && (
+            <div className="inline-flex flex-col items-center gap-1 bg-white/5 border border-white/10 px-6 py-3 rounded-2xl backdrop-blur-md shadow-inner">
+              <span className="text-[10px] uppercase tracking-[0.2em] text-white/50">Detected Tone</span>
+              <span className="font-mono text-white/90 font-medium">{avatarResult.skinTone}</span>
+            </div>
+          )}
+          
+          {avatarResult.skinTexture && (
+            <div className="inline-flex flex-col items-center gap-1 bg-white/5 border border-white/10 px-6 py-3 rounded-2xl backdrop-blur-md shadow-inner">
+              <span className="text-[10px] uppercase tracking-[0.2em] text-white/50">Skin Base</span>
+              <span className="font-mono text-white/90 font-medium">{avatarResult.skinTexture}</span>
+            </div>
+          )}
+        </div>
       </motion.div>
 
       {/* Before / After Slider Section */}
@@ -267,7 +282,7 @@ export function RecommendationResult({ result, onRetake }: RecommendationResultP
           </motion.button>
           <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
             <Link 
-              href="https://razorpay.com/payment-link/plink_S0whHB6te9yGl1"
+              href="https://form.typeform.com/to/HrxfV7DA"
               target="_blank"
               className="w-full sm:w-auto bg-amber-500 hover:bg-amber-400 text-black py-5 px-10 rounded-full font-bold tracking-[0.15em] text-[11px] uppercase transition-colors flex items-center justify-center gap-3 shadow-[0_0_30px_rgba(245,158,11,0.3)] hover:shadow-[0_0_40px_rgba(245,158,11,0.5)]"
             >

@@ -1,10 +1,11 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { FaceScanner, type ScanResult } from "@/components/face-scanner";
 import { RecommendationResult } from "@/components/recommendation-result";
-import { Camera, Sparkles, Wand2, ArrowRight, Heart, Star, CheckCircle, CalendarDays, Gift } from "lucide-react";
+import { BeforeAfterSlider } from "./before-after-slider";
+import { Camera, Sparkles, Wand2, ArrowRight, Heart, Star, CheckCircle, CalendarDays, Gift, Users, MessageCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 export type FlowStep = 
@@ -21,17 +22,30 @@ export function FlowOrchestrator() {
   const [step, setStep] = useState<FlowStep>("SCAN");
   const [scanResult, setScanResult] = useState<ScanResult | null>(null);
   const [occasion, setOccasion] = useState<string | null>(null);
+  const [scanCount, setScanCount] = useState<number>(3142);
+  
+  useEffect(() => {
+    const stored = localStorage.getItem("total_scans");
+    if (stored) {
+      setScanCount(parseInt(stored, 10));
+    } else {
+      localStorage.setItem("total_scans", "3142");
+    }
+  }, []);
   
   const handleScanComplete = (result: ScanResult) => {
     setScanResult(result);
     setStep("ANALYSIS");
+    const newCount = scanCount + 1;
+    setScanCount(newCount);
+    localStorage.setItem("total_scans", newCount.toString());
   };
 
   const nextStep = (next: FlowStep) => {
     setStep(next);
   };
 
-  const pageVariants = {
+  const pageVariants: any = {
     initial: { opacity: 0, y: 40, scale: 0.95 },
     animate: { 
       opacity: 1, 
@@ -47,7 +61,7 @@ export function FlowOrchestrator() {
     }
   };
 
-  const staggerContainer = {
+  const staggerContainer: any = {
     animate: {
       transition: {
         staggerChildren: 0.1
@@ -55,7 +69,7 @@ export function FlowOrchestrator() {
     }
   };
 
-  const itemVariants = {
+  const itemVariants: any = {
     initial: { opacity: 0, y: 20 },
     animate: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" } }
   };
@@ -107,6 +121,9 @@ export function FlowOrchestrator() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.2 }}
               >
+                <div className="inline-flex items-center gap-2 px-3 py-1 bg-amber-500/20 text-amber-400 rounded-full text-[10px] tracking-widest font-bold mb-6 shadow-[0_0_15px_rgba(245,158,11,0.2)]">
+                   <Users className="w-3 h-3" /> {scanCount.toLocaleString()} SCANS COMPLETED
+                </div>
                 <h1 className="text-3xl font-light mb-4">Start Face Scan</h1>
                 <p className="text-white/50 text-sm">Position your face within the frame to let our AI analyze your distinct features.</p>
               </motion.div>
@@ -164,25 +181,59 @@ export function FlowOrchestrator() {
               </motion.div>
 
               <motion.div 
-                className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6"
+                className="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-5 gap-6"
                 variants={staggerContainer}
                 initial="initial"
                 animate="animate"
               >
                 {[
-                  { id: "Bridal", desc: "Regal & Timeless", img: "https://images.unsplash.com/photo-1596484552834-6a58f850e0a1?w=500&q=80" },
+                  { id: "Bridal HD", desc: "Regal & Timeless", img: "https://images.unsplash.com/photo-1596484552834-6a58f850e0a1?w=500&q=80" },
+                  { id: "Soft Glam", desc: "Subtle & Luminous", img: "https://images.unsplash.com/photo-1512413914488-66236b2803b8?w=500&q=80" },
+                  { id: "Party Glam", desc: "Bold & Dramatic", img: "https://images.unsplash.com/photo-1512413914583-1764cbbf71bd?w=500&q=80" },
+                  { id: "Natural Look", desc: "Skin Tint & Dewy", img: "https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?w=500&q=80" },
                   { id: "Editorial", desc: "High Fashion", img: "https://images.unsplash.com/photo-1522337660859-02fbefca4702?w=500&q=80" },
-                  { id: "Glamour", desc: "Bold & Dramatic", img: "https://images.unsplash.com/photo-1512413914583-1764cbbf71bd?w=500&q=80" },
-                  { id: "Natural", desc: "Soft & Dewy", img: "https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?w=500&q=80" },
                 ].map((cat) => (
                   <motion.div 
                     variants={itemVariants}
                     whileHover={{ scale: 1.05, y: -10 }}
                     whileTap={{ scale: 0.95 }}
                     key={cat.id}
-                    onClick={() => {
+                    onClick={async () => {
                       setOccasion(cat.id);
                       nextStep("TRY_ON");
+                      
+                      if (scanResult) {
+                         const currentImage = scanResult.avatarResult.imageUrl;
+                         setScanResult({
+                           ...scanResult,
+                           avatarResult: { ...scanResult.avatarResult, imageUrl: "" }
+                         });
+                         
+                         try {
+                           const res = await fetch('/api/enhance', {
+                             method: 'POST',
+                             headers: { 'Content-Type': 'application/json' },
+                             body: JSON.stringify({ image: scanResult.originalImage, requestedMakeupType: cat.id })
+                           });
+                           const data = await res.json();
+                           if (data.success) {
+                             setScanResult({
+                               ...scanResult,
+                               avatarResult: data.data
+                             });
+                           } else {
+                             setScanResult({
+                               ...scanResult,
+                               avatarResult: { ...scanResult.avatarResult, imageUrl: currentImage }
+                             });
+                           }
+                         } catch (e) {
+                             setScanResult({
+                               ...scanResult,
+                               avatarResult: { ...scanResult.avatarResult, imageUrl: currentImage }
+                             });
+                         }
+                      }
                     }}
                     className="relative aspect-[4/5] rounded-3xl overflow-hidden cursor-pointer group border border-white/10 hover:border-amber-500/50 transition-colors shadow-xl"
                   >
@@ -319,49 +370,16 @@ export function FlowOrchestrator() {
                 <p className="text-white/50 font-light tracking-wide">See the transformation based on your AI beauty profile.</p>
               </div>
 
-              <div className="grid md:grid-cols-2 gap-8 mb-12">
+              <div className="mb-12">
                 <motion.div 
-                  initial={{ opacity: 0, x: -50 }}
-                  animate={{ opacity: 1, x: 0 }}
+                  initial={{ opacity: 0, y: 30 }}
+                  animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.8, ease: "easeOut" }}
-                  className="relative aspect-[3/4] rounded-3xl overflow-hidden border border-white/10 group"
                 >
-                  {scanResult?.originalImage ? (
-                    <img src={scanResult.originalImage} className="w-full h-full object-cover filter grayscale opacity-70 group-hover:opacity-100 group-hover:grayscale-0 transition-all duration-700" alt="Before" />
-                  ) : (
-                    <div className="w-full h-full bg-white/5" />
-                  )}
-                  <div className="absolute top-4 left-4 bg-black/60 backdrop-blur-md rounded-full px-5 py-2 border border-white/10">
-                    <span className="text-[10px] uppercase tracking-widest text-white/70">Before</span>
-                  </div>
-                </motion.div>
-
-                <motion.div 
-                  initial={{ opacity: 0, x: 50 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
-                  className="relative aspect-[3/4] rounded-3xl overflow-hidden border border-amber-500/50 shadow-[0_0_50px_rgba(245,158,11,0.2)] z-10"
-                >
-                  {scanResult?.avatarResult.imageUrl ? (
-                    <motion.img 
-                      initial={{ scale: 1.1 }}
-                      animate={{ scale: 1 }}
-                      transition={{ duration: 2 }}
-                      src={scanResult.avatarResult.imageUrl} 
-                      className="w-full h-full object-cover" 
-                      alt="After" 
-                    />
-                  ) : (
-                    <div className="w-full h-full bg-white/5" />
-                  )}
-                  <motion.div 
-                    initial={{ scale: 0 }}
-                    animate={{ scale: 1 }}
-                    transition={{ delay: 1, type: "spring" }}
-                    className="absolute top-4 left-4 bg-amber-500 text-black rounded-full px-5 py-2 shadow-[0_0_20px_rgba(245,158,11,0.5)]"
-                  >
-                    <span className="text-[10px] font-bold uppercase tracking-widest">After</span>
-                  </motion.div>
+                  <BeforeAfterSlider 
+                    beforeImage={scanResult?.originalImage || ""} 
+                    afterImage={scanResult?.avatarResult.imageUrl || ""} 
+                  />
                 </motion.div>
               </div>
 
@@ -614,20 +632,37 @@ export function FlowOrchestrator() {
                     </div>
                   </div>
 
-                  <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} className="relative z-10">
-                    <Button 
-                      asChild
-                      className="w-full bg-amber-500 hover:bg-amber-400 text-black py-8 rounded-2xl tracking-widest text-xs font-bold shadow-[0_0_30px_rgba(245,158,11,0.2)]"
-                    >
-                      <a
-                        href="https://razorpay.com/payment-link/plink_S0whHB6te9yGl1"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="flex items-center justify-center w-full h-full"
+                  <motion.div className="relative z-10 flex flex-col sm:flex-row gap-4">
+                    <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} className="flex-1">
+                      <Button 
+                        asChild
+                        className="w-full bg-amber-500 hover:bg-amber-400 text-black py-8 rounded-2xl tracking-widest text-xs font-bold shadow-[0_0_30px_rgba(245,158,11,0.2)]"
                       >
-                         CONFIRM & PAY ADVANCE <ArrowRight className="ml-2 w-4 h-4" />
-                      </a>
-                    </Button>
+                        <a
+                          href="https://form.typeform.com/to/HrxfV7DA"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="flex items-center justify-center w-full h-full"
+                        >
+                           PAY ADVANCE <ArrowRight className="ml-2 w-4 h-4" />
+                        </a>
+                      </Button>
+                    </motion.div>
+                    <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} className="flex-1">
+                      <Button 
+                        asChild
+                        className="w-full bg-[#25D366] hover:bg-[#20bd5a] text-white py-8 rounded-2xl tracking-widest text-xs font-bold shadow-[0_0_30px_rgba(37,211,102,0.3)]"
+                      >
+                        <a
+                          href={`https://wa.me/919876543210?text=${encodeURIComponent(`Hi! I'd like to book the ${occasion || 'Custom'} Look I just generated from The Makeup Halt AI Scanner. \n\nMy AI Beauty Score was: ${scanResult?.avatarResult.beautyScore || '90'}/100.\nCan we schedule a session?`)}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="flex items-center justify-center w-full h-full"
+                        >
+                           BOOK VIA WHATSAPP <MessageCircle className="ml-2 w-4 h-4" />
+                        </a>
+                      </Button>
+                    </motion.div>
                   </motion.div>
                   <p className="text-center text-[10px] text-white/30 uppercase tracking-widest mt-6 font-mono relative z-10">Powered by Razorpay Secure</p>
                 </motion.div>

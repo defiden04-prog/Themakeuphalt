@@ -33,9 +33,14 @@ export default function FaceScanPage() {
             Back to Home
           </motion.span>
         </Link>
-        <span className="text-xl font-light tracking-[0.2em] text-white">
-          THE MAKEUP HALT
-        </span>
+        <div className="flex items-center gap-3">
+          <div className="relative w-10 h-10 rounded-full overflow-hidden border border-amber-500/30">
+            <img src="/logo.png" alt="Logo" className="w-full h-full object-cover" />
+          </div>
+          <span className="text-xl font-light tracking-[0.2em] text-white hidden sm:block">
+            THE MAKEUP HALT
+          </span>
+        </div>
       </div>
 
       <div className="relative z-10 w-full flex-1 flex flex-col pt-12">
