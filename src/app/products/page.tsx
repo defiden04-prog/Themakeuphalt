@@ -394,7 +394,7 @@ export default function ProductsPage() {
                   className="border-white/20 text-white hover:bg-white/10 rounded-full px-10 py-7 h-auto text-[11px] tracking-[0.2em] font-semibold transition-all duration-500 bg-transparent"
                 >
                   <a
-                    href="https://form.typeform.com/to/HrxfV7DA"
+                    href="https://razorpay.com/payment-link/plink_S0whHB6te9yGl1"
                     target="_blank"
                     rel="noopener noreferrer"
                   >

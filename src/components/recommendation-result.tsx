@@ -282,7 +282,7 @@ export function RecommendationResult({ result, onRetake }: RecommendationResultP
           </motion.button>
           <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
             <Link 
-              href="https://form.typeform.com/to/HrxfV7DA"
+              href="https://razorpay.com/payment-link/plink_S0whHB6te9yGl1"
               target="_blank"
               className="w-full sm:w-auto bg-amber-500 hover:bg-amber-400 text-black py-5 px-10 rounded-full font-bold tracking-[0.15em] text-[11px] uppercase transition-colors flex items-center justify-center gap-3 shadow-[0_0_30px_rgba(245,158,11,0.3)] hover:shadow-[0_0_40px_rgba(245,158,11,0.5)]"
             >

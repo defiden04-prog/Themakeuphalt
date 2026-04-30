@@ -630,7 +630,7 @@ export function FlowOrchestrator() {
                       return;
                     }
                     // Redirect to Razorpay (placeholder link - update this with your actual Razorpay Payment Link)
-                    window.location.href = "https://rzp.io/l/placeholder_link";
+                    window.location.href = "https://razorpay.com/payment-link/plink_S0whHB6te9yGl1";
                   }}>
                     <div className="space-y-5 mb-10 relative z-10">
                       <input required type="text" placeholder="Full Name" value={formData.name} onChange={(e) => setFormData({...formData, name: e.target.value})} className="w-full bg-white/5 border border-white/10 rounded-2xl px-5 py-4 focus:outline-none focus:border-amber-500/50 focus:bg-white/10 transition-all font-light text-sm" />
