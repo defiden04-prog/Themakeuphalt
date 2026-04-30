@@ -23,6 +23,7 @@ export function FlowOrchestrator() {
   const [scanResult, setScanResult] = useState<ScanResult | null>(null);
   const [occasion, setOccasion] = useState<string | null>(null);
   const [scanCount, setScanCount] = useState<number>(3142);
+  const [formData, setFormData] = useState({ name: "", email: "", phone: "", date: "", time: "" });
   
   useEffect(() => {
     const stored = localStorage.getItem("total_scans");
@@ -622,32 +623,36 @@ export function FlowOrchestrator() {
                     <CalendarDays className="w-6 h-6 text-amber-500" /> Choose Date & Time
                   </h3>
                   
-                  <div className="space-y-5 mb-10 relative z-10">
-                    <input type="text" placeholder="Full Name" className="w-full bg-white/5 border border-white/10 rounded-2xl px-5 py-4 focus:outline-none focus:border-amber-500/50 focus:bg-white/10 transition-all font-light text-sm" />
-                    <input type="email" placeholder="Email Address" className="w-full bg-white/5 border border-white/10 rounded-2xl px-5 py-4 focus:outline-none focus:border-amber-500/50 focus:bg-white/10 transition-all font-light text-sm" />
-                    <input type="tel" placeholder="Phone Number" className="w-full bg-white/5 border border-white/10 rounded-2xl px-5 py-4 focus:outline-none focus:border-amber-500/50 focus:bg-white/10 transition-all font-light text-sm" />
-                    <div className="grid grid-cols-2 gap-4">
-                      <input type="date" className="w-full bg-white/5 border border-white/10 rounded-2xl px-5 py-4 focus:outline-none focus:border-amber-500/50 focus:bg-white/10 transition-all font-light text-[13px] text-white/50" />
-                      <input type="time" className="w-full bg-white/5 border border-white/10 rounded-2xl px-5 py-4 focus:outline-none focus:border-amber-500/50 focus:bg-white/10 transition-all font-light text-[13px] text-white/50" />
+                  <form onSubmit={(e) => {
+                    e.preventDefault();
+                    if (!formData.name || !formData.email || !formData.phone) {
+                      alert("Please fill in your name, email, and phone number.");
+                      return;
+                    }
+                    // Redirect to Razorpay (placeholder link - update this with your actual Razorpay Payment Link)
+                    window.location.href = "https://rzp.io/l/placeholder_link";
+                  }}>
+                    <div className="space-y-5 mb-10 relative z-10">
+                      <input required type="text" placeholder="Full Name" value={formData.name} onChange={(e) => setFormData({...formData, name: e.target.value})} className="w-full bg-white/5 border border-white/10 rounded-2xl px-5 py-4 focus:outline-none focus:border-amber-500/50 focus:bg-white/10 transition-all font-light text-sm" />
+                      <input required type="email" placeholder="Email Address" value={formData.email} onChange={(e) => setFormData({...formData, email: e.target.value})} className="w-full bg-white/5 border border-white/10 rounded-2xl px-5 py-4 focus:outline-none focus:border-amber-500/50 focus:bg-white/10 transition-all font-light text-sm" />
+                      <input required type="tel" placeholder="Phone Number" value={formData.phone} onChange={(e) => setFormData({...formData, phone: e.target.value})} className="w-full bg-white/5 border border-white/10 rounded-2xl px-5 py-4 focus:outline-none focus:border-amber-500/50 focus:bg-white/10 transition-all font-light text-sm" />
+                      <div className="grid grid-cols-2 gap-4">
+                        <input type="date" value={formData.date} onChange={(e) => setFormData({...formData, date: e.target.value})} className="w-full bg-white/5 border border-white/10 rounded-2xl px-5 py-4 focus:outline-none focus:border-amber-500/50 focus:bg-white/10 transition-all font-light text-[13px] text-white/50" />
+                        <input type="time" value={formData.time} onChange={(e) => setFormData({...formData, time: e.target.value})} className="w-full bg-white/5 border border-white/10 rounded-2xl px-5 py-4 focus:outline-none focus:border-amber-500/50 focus:bg-white/10 transition-all font-light text-[13px] text-white/50" />
+                      </div>
                     </div>
-                  </div>
 
-                  <motion.div className="relative z-10 flex flex-col sm:flex-row gap-4">
-                    <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} className="flex-1">
-                      <Button 
-                        asChild
-                        className="w-full bg-amber-500 hover:bg-amber-400 text-black py-8 rounded-2xl tracking-widest text-xs font-bold shadow-[0_0_30px_rgba(245,158,11,0.2)]"
-                      >
-                        <a
-                          href="https://form.typeform.com/to/HrxfV7DA"
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="flex items-center justify-center w-full h-full"
+                    <motion.div className="relative z-10 flex flex-col sm:flex-row gap-4">
+                      <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} className="flex-1">
+                        <Button 
+                          type="submit"
+                          className="w-full bg-amber-500 hover:bg-amber-400 text-black py-8 rounded-2xl tracking-widest text-xs font-bold shadow-[0_0_30px_rgba(245,158,11,0.2)]"
                         >
-                           PAY ADVANCE <ArrowRight className="ml-2 w-4 h-4" />
-                        </a>
-                      </Button>
-                    </motion.div>
+                          <span className="flex items-center justify-center w-full h-full">
+                             PAY ADVANCE <ArrowRight className="ml-2 w-4 h-4" />
+                          </span>
+                        </Button>
+                      </motion.div>
                     <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} className="flex-1">
                       <Button 
                         asChild
@@ -663,7 +668,7 @@ export function FlowOrchestrator() {
                         </a>
                       </Button>
                     </motion.div>
-                  </motion.div>
+                  </form>
                   <p className="text-center text-[10px] text-white/30 uppercase tracking-widest mt-6 font-mono relative z-10">Powered by Razorpay Secure</p>
                 </motion.div>
               </div>
