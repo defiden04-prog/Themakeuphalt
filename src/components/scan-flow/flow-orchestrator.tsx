@@ -668,7 +668,8 @@ export function FlowOrchestrator() {
                         </a>
                       </Button>
                     </motion.div>
-                  </form>
+                  </motion.div>
+                </form>
                   <p className="text-center text-[10px] text-white/30 uppercase tracking-widest mt-6 font-mono relative z-10">Powered by Razorpay Secure</p>
                 </motion.div>
               </div>
